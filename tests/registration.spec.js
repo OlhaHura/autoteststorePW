@@ -12,6 +12,4 @@ test('Open the registration form', async ({ page }) => {
     await loginPage.clickContinue();
     await expect(page).toHaveURL(/account|create/);
 
-    await page.waitForTimeout(2000);
-
 });
