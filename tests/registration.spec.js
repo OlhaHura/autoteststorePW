@@ -1,7 +1,8 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage } from '../pages/login.page';
+import { RegistrationPage } from '../pages/registration.page';
 
-test('Open the registration form', async ({ page }) => {
+test('Test 10: Open the registration form.', async ({ page }) => {
     const loginPage = new LoginPage(page);
     await page.goto('/');
     await page.waitForSelector('.logo');
@@ -11,5 +12,47 @@ test('Open the registration form', async ({ page }) => {
 
     await loginPage.clickContinue();
     await expect(page).toHaveURL(/account|create/);
+
+});
+
+
+test('Test 20: Fill the registration form. Field by field.', async ({ page }) => {
+    const registrationPage = new RegistrationPage(page);
+    await page.goto('/index.php?rt=account/create');
+    await registrationPage.fillFirstName('Marco');
+    await registrationPage.fillLastName('Polo');
+    await registrationPage.fillEmail('marco.polo.1254@gmail.com');
+    await registrationPage.fillPhone('+420 224 965 344');
+    await registrationPage.fillFax('+420 224 923 077');
+    await registrationPage.fillComapny('MDM');
+    await registrationPage.fillAddress1('5th Ave');
+    await registrationPage.fillAddress2('1023/32');
+    await registrationPage.fillCity('Some City');
+    await registrationPage.selectRegion('Bristol');
+    await registrationPage.fillZIP('20493');
+    await registrationPage.selectCountry('Uganda');
+    await registrationPage.fillLoginName('marco_polo_1254');
+    await registrationPage.fillPassword('123456');
+    await registrationPage.fillPasswordConfirm('123456');
+    await registrationPage.subscribeNewsletter(false);
+    await registrationPage.agreePrivacyPolicy(true);
+
+    //check the fileds
+    await expect(registrationPage.firstNameInput).toHaveValue('Marco');
+    await expect(registrationPage.lastNameInput).toHaveValue('Polo');
+    await expect(registrationPage.emailInput).toHaveValue('marco.polo.1254@gmail.com');
+    await expect(registrationPage.phoneInput).toHaveValue('+420 224 965 344');
+    await expect(registrationPage.faxInput).toHaveValue('+420 224 923 077');
+    await expect(registrationPage.companyInput).toHaveValue('MDM');
+    await expect(registrationPage.address1Input).toHaveValue('5th Ave');
+    await expect(registrationPage.address2Input).toHaveValue('1023/32');
+    await expect(registrationPage.cityInput).toHaveValue('Some City');
+    await expect(registrationPage.zipInput).toHaveValue('20493');
+    await expect(registrationPage.loginNameInput).toHaveValue('marco_polo_1254');
+    await expect(registrationPage.passwordInput).toHaveValue('123456');
+    await expect(registrationPage.passwordConfirmInput).toHaveValue('123456');
+    await expect(registrationPage.subscribeNo).toBeChecked();
+    await expect(registrationPage.subscribeYes).not.toBeChecked();
+    await expect(registrationPage.privacyPolicyCheckbox).toBeChecked();
 
 });
