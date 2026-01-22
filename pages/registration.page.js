@@ -6,6 +6,7 @@ export class RegistrationPage extends BasePage {
 
         //buttons
         this.openLoginPageButton = page.getByRole('button', { name: 'login page' });
+        this.continueButton = page.getByTitle('Continue');
 
         //input
         this.firstNameInput = page.locator('#AccountFrm_firstname');
@@ -33,9 +34,8 @@ export class RegistrationPage extends BasePage {
         //checbox
         this.privacyPolicyCheckbox = page.locator('#AccountFrm_agree');
 
-
-
-
+        //errors
+        this.errorAlert = page.locator('.alert.alert-error.alert-danger');
 
     }
 
@@ -113,5 +113,13 @@ export class RegistrationPage extends BasePage {
         }
     }
 
+    async clickContinueButton() {
+        await this.continueButton.click();
+    }
+
+    async getAlertText() {
+        await this.errorAlert.waitFor({ state: 'visible' });
+        return await this.errorAlert.innerText();
+    }
 
 }

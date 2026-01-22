@@ -56,3 +56,56 @@ test('Test 20: Fill the registration form. Field by field.', async ({ page }) =>
     await expect(registrationPage.privacyPolicyCheckbox).toBeChecked();
 
 });
+
+
+test('Test 30: Empty registration form. Validation errors.', async ({ page }) => {
+    const registrationPage = new RegistrationPage(page);
+
+    await page.goto('/index.php?rt=account/create');
+
+    await expect(registrationPage.firstNameInput).toBeVisible();
+    await expect(registrationPage.emailInput).toBeVisible();
+
+    await registrationPage.agreePrivacyPolicy(true);
+    await registrationPage.clickContinueButton();
+
+    const alertText = await registrationPage.getAlertText();
+
+    const expectedMessages = [
+        'Login name must be alphanumeric only and between 5 and 64 characters!',
+        'First Name must be between 1 and 32 characters!',
+        'Last Name must be between 1 and 32 characters!',
+        'Email Address does not appear to be valid!',
+        'Address 1 must be between 3 and 128 characters!',
+        'City must be between 3 and 128 characters!',
+        'Zip/postal code must be between 3 and 10 characters!',
+        'Password must be between 4 and 20 characters!'
+    ];
+
+    for (const message of expectedMessages) {
+        expect(alertText).toContain(message);
+    }
+});
+
+
+test('Test 40: Error: You must agree to the Privacy Policy!', async ({ page }) => {
+   const registrationPage = new RegistrationPage(page);
+
+    await page.goto('/index.php?rt=account/create');
+
+    await expect(registrationPage.firstNameInput).toBeVisible();
+    await expect(registrationPage.emailInput).toBeVisible();
+
+    await registrationPage.clickContinueButton();
+
+    const alertText = await registrationPage.getAlertText();
+
+    const expectedMessages = [
+        'Error: You must agree to the Privacy Policy!',
+    ];
+
+    for (const message of expectedMessages) {
+        expect(alertText).toContain(message);
+    }
+
+});
