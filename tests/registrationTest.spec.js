@@ -7,10 +7,10 @@ test('Test 10: Open the registration form.', async ({ page }) => {
     await page.goto('/');
     await page.waitForSelector('.logo');
 
-    await loginPage.menu.clickLoginOrRegister();
+    await loginPage.menu.loginOrRegisterButton.click();
     await expect(page).toHaveURL(/account|login/);
 
-    await loginPage.clickContinue();
+    await loginPage.continueButton.click();
     await expect(page).toHaveURL(/account|create/);
 
 });
@@ -67,7 +67,7 @@ test('Test 30: Empty registration form. Validation errors.', async ({ page }) =>
     await expect(registrationPage.emailInput).toBeVisible();
 
     await registrationPage.agreePrivacyPolicy(true);
-    await registrationPage.clickContinueButton();
+    await registrationPage.continueButton.click();
 
     const alertText = await registrationPage.getAlertText();
 
@@ -96,7 +96,7 @@ test('Test 40: Error: You must agree to the Privacy Policy!', async ({ page }) =
     await expect(registrationPage.firstNameInput).toBeVisible();
     await expect(registrationPage.emailInput).toBeVisible();
 
-    await registrationPage.clickContinueButton();
+    await registrationPage.continueButton.click();
 
     const alertText = await registrationPage.getAlertText();
 
